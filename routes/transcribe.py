@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from services.whisper_service import transcribe_radio_stream
 
 transcribe_bp = Blueprint("transcribe", __name__)
 
@@ -6,12 +7,13 @@ transcribe_bp = Blueprint("transcribe", __name__)
 def transcribe():
   try:
     data = request.get_json()
-    url = data.get("url")
 
     if not data or "url" not in data:
       return jsonify({"error": "스트리밍 URL이 제공되지 않았습니다."}), 400
 
+    url = data.get("url")
     print(f"받은 스트리밍 URL: {url}")
+    transcribe_radio_stream(url)
 
   except Exception as e:
     print(f"오류 발생: {e}")
