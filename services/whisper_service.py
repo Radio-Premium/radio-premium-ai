@@ -9,8 +9,17 @@ model = whisper.load_model("base", device="cpu")
 text_queue = queue.Queue()
 
 socketio = socketio.Client()
+
+@socketio.event(namespace="/whisper")
+def connect():
+    print("Whisper namespace connected")
+
+@socketio.event(namespace="/whisper")
+def disconnect():
+    print("Whisper namespace disconnected")
+
 # TODO: Whisper 서버 배포 시 주소 변경
-socketio.connect("http://localhost:3000/whisper")
+socketio.connect("http://localhost:3000", namespaces=["/whisper"])
 
 def transcribe_radio_stream(url, userId):
   def worker():
@@ -39,7 +48,7 @@ def transcribe_radio_stream(url, userId):
         text = result.get("text", "").strip()
 
         if text:
-          socketio.emit("transcribedRadioText", { "text": text, "userId": userId })
+          socketio.emit("transcribedRadioText", { "text": text, "userId": userId }, namespace="/whisper")
           print(f"[전송됨] {text}")
 
     except Exception as e:

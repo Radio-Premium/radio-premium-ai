@@ -16,6 +16,8 @@ def transcribe():
     print(f"받은 스트리밍 URL: {url}")
     transcribe_radio_stream(url, userId)
 
+    return jsonify({"message": "transcribe start"}), 200
+
   except Exception as e:
     print(f"오류 발생: {e}")
     return jsonify({"error": "서버 오류가 발생했습니다."}), 500
