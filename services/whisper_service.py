@@ -10,9 +10,9 @@ text_queue = queue.Queue()
 
 socketio = socketio.Client()
 # TODO: Whisper 서버 배포 시 주소 변경
-socketio.connect("http://localhost:3000")
+socketio.connect("http://localhost:3000/whisper")
 
-def transcribe_radio_stream(url):
+def transcribe_radio_stream(url, userId):
   def worker():
     try:
       process = subprocess.Popen(
@@ -39,7 +39,7 @@ def transcribe_radio_stream(url):
         text = result.get("text", "").strip()
 
         if text:
-          socketio.emit("transcribedRadioText", {"text": text})
+          socketio.emit("transcribedRadioText", { "text": text, "userId": userId })
           print(f"[전송됨] {text}")
 
     except Exception as e:

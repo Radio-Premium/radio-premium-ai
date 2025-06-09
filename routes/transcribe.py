@@ -12,8 +12,9 @@ def transcribe():
       return jsonify({"error": "스트리밍 URL이 제공되지 않았습니다."}), 400
 
     url = data.get("url")
+    userId = data.get("userId")
     print(f"받은 스트리밍 URL: {url}")
-    transcribe_radio_stream(url)
+    transcribe_radio_stream(url, userId)
 
   except Exception as e:
     print(f"오류 발생: {e}")
