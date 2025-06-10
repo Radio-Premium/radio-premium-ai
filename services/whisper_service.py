@@ -9,6 +9,7 @@ from datetime import datetime
 import os
 from .logger import save_transcription_log
 import re
+from services.process_registry import active_processes
 
 LOG_FILE_PATH = "data/whisper_logs.csv"
 os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
@@ -47,6 +48,7 @@ def transcribe_radio_stream(url, userId):
         ],
         stdout=subprocess.PIPE
       )
+      active_processes[userId] = process
 
       sample_rate = 16000
       chunk_duration = 5

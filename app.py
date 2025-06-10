@@ -1,8 +1,14 @@
 from flask import Flask
-from routes.transcribe import transcribe_bp  # 1. transcribe 라우터 가져오기
+from flask_cors import CORS
+from routes.transcribe import transcribe_bp
+from routes.stop import stop_bp
 
 app = Flask(__name__)
+# 추후 배포 시 변경
+CORS(app)
+
 app.register_blueprint(transcribe_bp)
+app.register_blueprint(stop_bp)
 
 @app.route("/")
 def index():
