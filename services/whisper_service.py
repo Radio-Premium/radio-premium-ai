@@ -62,8 +62,8 @@ def transcribe_radio_stream(url, userId):
         text = result.get("text", "").strip()
 
         if text:
-          clean_text = re.sub(r"\s+", "", text)
-          save_transcription_log(clean_text, userId)
+          clear_spaces_text = re.sub(r"\s+", "", text)
+          save_transcription_log(clear_spaces_text, userId)
           socketio.emit("transcribedRadioText", { "text": text, "userId": userId }, namespace="/whisper")
           print(f"[전송됨] {text}")
 
