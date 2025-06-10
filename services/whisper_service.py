@@ -4,6 +4,20 @@ import whisper
 import numpy
 import threading
 import queue
+import csv
+from datetime import datetime
+import os
+from .logger import save_transcription_log
+import re
+
+LOG_FILE_PATH = "data/whisper_logs.csv"
+os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
+
+def save_transcription_log(text, userId):
+    timestamp = datetime.now().isoformat()
+    with open(LOG_FILE_PATH, mode="a", newline='', encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow([timestamp, userId, text])
 
 model = whisper.load_model("base", device="cpu")
 text_queue = queue.Queue()
@@ -48,6 +62,8 @@ def transcribe_radio_stream(url, userId):
         text = result.get("text", "").strip()
 
         if text:
+          clean_text = re.sub(r"\s+", "", text)
+          save_transcription_log(clean_text, userId)
           socketio.emit("transcribedRadioText", { "text": text, "userId": userId }, namespace="/whisper")
           print(f"[전송됨] {text}")
 
