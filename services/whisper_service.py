@@ -36,7 +36,7 @@ def disconnect():
 # TODO: Whisper 서버 배포 시 주소 변경
 socketio.connect("http://localhost:3000", namespaces=["/whisper"])
 
-def transcribe_radio_stream(url, userId):
+def transcribe_radio_stream(url, userId, channelId):
   def worker():
     try:
       process = subprocess.Popen(
@@ -66,7 +66,7 @@ def transcribe_radio_stream(url, userId):
         if text:
           clear_spaces_text = re.sub(r"\s+", "", text)
           save_transcription_log(clear_spaces_text, userId)
-          socketio.emit("transcribedRadioText", { "text": text, "userId": userId }, namespace="/whisper")
+          socketio.emit("transcribedRadioText", { "text": clear_spaces_text, "userId": userId, "channelId": channelId }, namespace="/whisper")
           print(f"[전송됨] {text}")
 
     except Exception as e:

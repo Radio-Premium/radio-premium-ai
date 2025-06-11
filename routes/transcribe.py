@@ -13,8 +13,9 @@ def transcribe():
 
     url = data.get("url")
     userId = data.get("userId")
+    channelId = data.get("channelId")
     print(f"받은 스트리밍 URL: {url}")
-    transcribe_radio_stream(url, userId)
+    transcribe_radio_stream(url, userId, channelId)
 
     return jsonify({"message": "transcribe start"}), 200
 
