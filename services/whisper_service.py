@@ -1,15 +1,21 @@
-import socketio
-import subprocess
-import whisper
-import numpy
-import threading
-import queue
-import csv
-from datetime import datetime
 import os
-from .logger import save_transcription_log
+import csv
 import re
+import queue
+import threading
+import subprocess
+from datetime import datetime
+
+import socketio
+import numpy
+import whisper
+from dotenv import load_dotenv
+
+from .logger import save_transcription_log
 from services.process_registry import active_processes
+
+load_dotenv()
+BACKEND_API_URL = os.getenv("BACKEND_API_URL")
 
 LOG_FILE_PATH = "data/whisper_logs.csv"
 os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
@@ -22,7 +28,6 @@ def save_transcription_log(text, userId):
 
 model = whisper.load_model("base", device="cpu")
 text_queue = queue.Queue()
-
 socketio = socketio.Client()
 
 @socketio.event(namespace="/whisper")
@@ -33,8 +38,7 @@ def connect():
 def disconnect():
     print("Whisper namespace disconnected")
 
-# TODO: Whisper 서버 배포 시 주소 변경
-socketio.connect("http://localhost:3000", namespaces=["/whisper"])
+socketio.connect(BACKEND_API_URL, namespaces=["/whisper"])
 
 def transcribe_radio_stream(url, userId, channelId):
   def worker():
