@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import FunctionTransformer, OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils.class_weight import compute_class_weight
 
 whisper_labeled_csv_files = glob.glob("data/whisper_labeled_*.csv")
