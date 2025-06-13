@@ -4,6 +4,7 @@ import re
 import queue
 import threading
 import subprocess
+import warnings
 from datetime import datetime
 
 import socketio
@@ -13,9 +14,12 @@ from dotenv import load_dotenv
 
 from .logger import save_transcription_log
 from services.process_registry import active_processes
+from services.predict_ad import predict_ad
 
 load_dotenv()
 BACKEND_API_URL = os.getenv("BACKEND_API_URL")
+
+warnings.filterwarnings("ignore", message="FP16 is not supported on CPU; using FP32 instead")
 
 LOG_FILE_PATH = "data/whisper_logs.csv"
 os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
@@ -28,6 +32,7 @@ def save_transcription_log(text, userId):
 
 model = whisper.load_model("base", device="cpu")
 text_queue = queue.Queue()
+
 socketio = socketio.Client()
 
 @socketio.event(namespace="/whisper")
@@ -70,8 +75,19 @@ def transcribe_radio_stream(url, userId, channelId):
         if text:
           clear_spaces_text = re.sub(r"\s+", "", text)
           save_transcription_log(clear_spaces_text, userId)
-          socketio.emit("transcribedRadioText", { "text": clear_spaces_text, "userId": userId, "channelId": channelId }, namespace="/whisper")
-          print(f"[전송됨] {text}")
+
+          timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+          prediction_result = predict_ad(timestamp, clear_spaces_text)
+
+          socketio.emit("transcribedRadioText", {
+            "text": clear_spaces_text,
+            "userId": userId,
+            "channelId": channelId,
+            "isAd": prediction_result["isAd"],
+            "confidence": prediction_result["confidence"]
+          }, namespace="/whisper")
+
+          print(f"[추출 결과] {text} | 광고 여부: {prediction_result['label']} ({prediction_result['confidence']:.2%})")
 
     except Exception as e:
       print(f"[whisper_service] 오류: {e}")
