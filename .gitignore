@@ -1,3 +1,9 @@
+data
+
+models
+
 venv
 
 .env
+
+*.pyc
