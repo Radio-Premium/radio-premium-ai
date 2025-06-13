@@ -43,10 +43,6 @@ classes = np.array(sorted(df["label"].unique()))
 weights = compute_class_weight("balanced", classes=classes, y=y)
 class_weights = dict(zip(classes, weights))
 
-classes = np.array(sorted(df["label"].unique()))
-weights = compute_class_weight("balanced", classes=classes, y=y)
-class_weights = dict(zip(classes, weights))
-
 preprocessor = ColumnTransformer(
     transformers=[
         ("text", TfidfVectorizer(ngram_range=(1, 2)), "text"),
