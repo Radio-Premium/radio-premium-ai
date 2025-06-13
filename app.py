@@ -4,7 +4,7 @@ from routes.transcribe import transcribe_bp
 from routes.stop import stop_bp
 
 app = Flask(__name__)
-# 추후 배포 시 변경
+
 CORS(app)
 
 app.register_blueprint(transcribe_bp)

@@ -76,11 +76,9 @@ def transcribe_radio_stream(url, userId, channelId):
           clear_spaces_text = re.sub(r"\s+", "", text)
           save_transcription_log(clear_spaces_text, userId)
 
-          # 광고 예측
           timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           prediction_result = predict_ad(timestamp, clear_spaces_text)
 
-          # 소켓 전송
           socketio.emit("transcribedRadioText", {
             "text": clear_spaces_text,
             "userId": userId,
