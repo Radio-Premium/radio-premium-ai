@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 from .logger import save_transcription_log
 from services.process_registry import active_processes
-from services.ad_predictor import predict_ad
+from services.predict_ad import predict_ad
 
 load_dotenv()
 BACKEND_API_URL = os.getenv("BACKEND_API_URL")
