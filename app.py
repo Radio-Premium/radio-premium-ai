@@ -5,6 +5,7 @@ from routes.stop import stop_bp
 
 app = Flask(__name__)
 
+# TODO: 추후 배포 시 변경
 CORS(app)
 
 app.register_blueprint(transcribe_bp)
