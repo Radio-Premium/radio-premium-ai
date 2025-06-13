@@ -55,13 +55,13 @@ X_combined = pd.concat([X_text, X_time], axis=1)
 model.fit(X_combined, y)
 
 y_pred = model.predict(X_combined)
-print("📊 Classification Report:")
+print("Classification Report:")
 print(classification_report(y, y_pred, target_names=["Not Ad", "Ad"]))
 
 wrong = df[y != y_pred]
-print("\n❌ 잘못 분류된 샘플:")
+print("\n잘못 분류된 샘플:")
 print(wrong[["timestamp", "text", "label"]].head(10))
 
 os.makedirs("models", exist_ok=True)
 joblib.dump(model, "models/ad_classifier.pkl")
-print("🎉 Logistic Regression 광고 탐지 모델이 저장되었습니다! → models/ad_classifier.pkl")
+print("Logistic Regression 광고 탐지 모델이 저장되었습니다! → models/ad_classifier.pkl")

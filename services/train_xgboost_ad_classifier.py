@@ -76,13 +76,13 @@ model.fit(X_combined, y)
 y_proba = model.predict_proba(X_combined)[:, 1]
 threshold = 0.3
 y_pred = (y_proba >= threshold).astype(int)
-print(f"📊 Classification Report (threshold={threshold}):")
+print(f"Classification Report (threshold={threshold}):")
 print(classification_report(y, y_pred, target_names=["Not Ad", "Ad"]))
 
 wrong = df[y != y_pred]
-print("\n❌ 잘못 분류된 샘플:")
+print("\n잘못 분류된 샘플:")
 print(wrong[["timestamp", "text", "label"]].head(10))
 
 os.makedirs("models", exist_ok=True)
 joblib.dump(model, "models/ad_classifier.pkl")
-print("🎉 XGBoost 광고 탐지 모델이 저장되었습니다! → models/ad_classifier.pkl")
+print("XGBoost 광고 탐지 모델이 저장되었습니다! → models/ad_classifier.pkl")
