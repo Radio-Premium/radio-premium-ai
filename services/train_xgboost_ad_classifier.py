@@ -13,6 +13,8 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils.class_weight import compute_class_weight
 from xgboost import XGBClassifier
 
+from services.constants import MODEL_PATH
+
 csv_files = glob.glob("data/whisper_labeled_*.csv")
 df_list = [pd.read_csv(file, header=None, names=["timestamp", "id", "text", "label"], quotechar='"') for file in csv_files]
 df = pd.concat(df_list, ignore_index=True)
@@ -84,5 +86,5 @@ print("\n잘못 분류된 샘플:")
 print(wrong[["timestamp", "text", "label"]].head(10))
 
 os.makedirs("models", exist_ok=True)
-joblib.dump(model, "models/ad_classifier.pkl")
-print("XGBoost 광고 탐지 모델이 저장되었습니다! → models/ad_classifier.pkl")
+joblib.dump(model, MODEL_PATH)
+print(f"XGBoost 광고 탐지 모델이 저장되었습니다! → {MODEL_PATH}")

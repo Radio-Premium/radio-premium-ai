@@ -2,7 +2,9 @@ from datetime import datetime
 import joblib
 import pandas as pd
 
-model = joblib.load("models/ad_classifier.pkl")
+from services.constants import MODEL_PATH
+
+model = joblib.load(MODEL_PATH)
 
 def predict_ad(timestamp: str, text: str) -> dict:
     dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")

@@ -12,6 +12,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils.class_weight import compute_class_weight
 
+from services.constants import MODEL_PATH
+
 whisper_labeled_csv_files = glob.glob("data/whisper_labeled_*.csv")
 
 df_list = []
@@ -63,5 +65,5 @@ print("\n잘못 분류된 샘플:")
 print(wrong[["timestamp", "text", "label"]].head(10))
 
 os.makedirs("models", exist_ok=True)
-joblib.dump(model, "models/ad_classifier.pkl")
-print("Logistic Regression 광고 탐지 모델이 저장되었습니다! → models/ad_classifier.pkl")
+joblib.dump(model, MODEL_PATH)
+print(f"Logistic Regression 광고 탐지 모델이 저장되었습니다! → {MODEL_PATH}")

@@ -4,6 +4,8 @@ from datetime import datetime
 import joblib
 import pandas as pd
 
+from services.constants import MODEL_PATH
+
 if len(sys.argv) != 3:
     print("사용법: python services/predict_ad.py '<timestamp>' '<text>'")
     print("예시: python services/predict_ad.py '2025-06-10 12:34:56' '선팅할인행사중입니다'")
@@ -19,7 +21,7 @@ except ValueError:
     print("timestamp 형식이 잘못되었습니다. 예: 2025-06-10 12:34:56")
     sys.exit(1)
 
-model = joblib.load("models/ad_classifier.pkl")
+model = joblib.load(MODEL_PATH)
 
 X_input = pd.DataFrame([{
     "text": text,
