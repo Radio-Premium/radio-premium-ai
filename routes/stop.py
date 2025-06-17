@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
 from services.process_registry import active_processes
 
-stop_bp = Blueprint("stop_transcribe", __name__)
+stop_bp = Blueprint("stop_transcription", __name__)
 
-@stop_bp.route("/stop", methods=["POST"])
+@stop_bp.route("/transcription", methods=["DELETE"])
 def stop_transcription():
     data = request.get_json()
     userId = data.get("userId")
