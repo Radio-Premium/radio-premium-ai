@@ -1,7 +1,7 @@
 # RadioPremium
 
 <div align="center">
-  <img width="500" height="440" alt="image 23 (1)" src="https://github.com/user-attachments/assets/a2b583bc-eaae-42cc-a568-5f2fd44ed7ca" />
+  <img width="500" alt="RadioPremium Logo" src="https://github.com/user-attachments/assets/a2b583bc-eaae-42cc-a568-5f2fd44ed7ca" />
 
 
   <p>
